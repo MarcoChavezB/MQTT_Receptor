@@ -42,14 +42,14 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe(topic)
 
 # Función para procesar los mensajes MQTT
-def on_message(msg):
-    message = msg.payload.decode("utf-8")
-    print(message)
-    if message == 'w':
+def on_message(client, userdata, message):
+    payload = message.payload.decode("utf-8")
+    print(payload)
+    if payload == 'w':
         go()
-    elif message == 's':
+    elif payload == 's':
         back()
-    elif message == ' ':
+    elif payload == ' ':
         stop()
 
 # Configuración del cliente MQTT
