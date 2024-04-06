@@ -44,6 +44,7 @@ def on_connect(client, userdata, flags, rc):
 # Función para procesar los mensajes MQTT
 def on_message(client, userdata, msg):
     message = msg.payload.decode("utf-8")
+    print(message)
     if message == 'w':
         adelante()
     elif message == 's':
