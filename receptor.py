@@ -6,12 +6,14 @@ import ssl
 topic="motors/control"
 
 # Configuración de los pines de los motores
+indicator_led_pin = 40
 left_motor_pin = 11
 right_motor_pin = 7
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(left_motor_pin, GPIO.OUT)
 GPIO.setup(right_motor_pin, GPIO.OUT)
+GPIO.setup(indicator_led_pin, GPIO.OUT)
 
 left_pwm = GPIO.PWM(left_motor_pin, 50)
 right_pwm = GPIO.PWM(right_motor_pin, 50)
@@ -42,6 +44,8 @@ def stop():
 # Función de conexión MQTT
 def on_connect(client, userdata, flags, rc):
     print("Conectado al broker MQTT con resultado: " + str(rc))
+    if rc == 0:
+        GPIO.output(indicator_led_pin, GPIO.HIGH)
     client.subscribe(topic)
 
 # Función para procesar los mensajes MQTT
