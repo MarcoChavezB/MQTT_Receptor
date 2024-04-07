@@ -28,15 +28,22 @@ atras = 12
 # Funciones para controlar los motores
 def go():
     print("Adelante")
-    left_pwm.ChangeDutyCycle(adelante)
-    right_pwm.ChangeDutyCycle(atras)
+    right_motor_pin.ChangeDutyCycle(neutro)
+    left_motor_pin.ChangeDutyCycle(neutro)
+    sleep(1)
+    right_motor_pin.ChangeDutyCycle(adelante)
+    left_motor_pin.ChangeDutyCycle(adelante)
+    
 
 def back():
     print("Atrás")
-    left_pwm.ChangeDutyCycle(atras)
-    right_pwm.ChangeDutyCycle(adelante)
+    right_motor_pin.ChangeDutyCycle(neutro)
+    left_motor_pin.ChangeDutyCycle(neutro)
+    sleep(1)
+    right_motor_pin.ChangeDutyCycle(atras)
+    left_motor_pin.ChangeDutyCycle(atras)
     
-
+  
 def stop():
     print("Detener")
     left_pwm.ChangeDutyCycle(neutro)
