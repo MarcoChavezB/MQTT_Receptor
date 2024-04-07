@@ -16,7 +16,6 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setup(left_motor_pin, GPIO.OUT)
 GPIO.setup(right_motor_pin, GPIO.OUT)
 GPIO.setup(led_indicator_pin, GPIO.OUT)
-GPIO.cleanup()
 
 
 left_pwm = GPIO.PWM(left_motor_pin, 50)
@@ -85,3 +84,4 @@ client.connect("a169mg5ru5h2z1-ats.iot.us-east-2.amazonaws.com", 8883, 60)
 
 # Loop principal del cliente MQTT
 client.loop_forever()
+GPIO.cleanup()
