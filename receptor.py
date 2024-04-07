@@ -7,13 +7,16 @@ topic="motors/control"
 
 # Configuración de los pines de los motores
 
-left_motor_pin = 11
-right_motor_pin = 7
+left_motor_pin = 7
+right_motor_pin = 8
+led_indicator_pin = 3
+ 
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(left_motor_pin, GPIO.OUT)
 GPIO.setup(right_motor_pin, GPIO.OUT)
-
+GPIO.setup(led_indicator_pin, GPIO.OUT)
+GPIO.cleanup()
 
 left_pwm = GPIO.PWM(left_motor_pin, 50)
 right_pwm = GPIO.PWM(right_motor_pin, 50)
@@ -27,27 +30,29 @@ atras = 12
 
 # Funciones para controlar los motores
 def go():
-    print("Adelante")
     stop()
     right_pwm.ChangeDutyCycle(adelante)
     left_pwm.ChangeDutyCycle(adelante)
     
 
 def back():
-    print("Atrás")
     stop()
     right_pwm.ChangeDutyCycle(atras)
     left_pwm.ChangeDutyCycle(atras)
 
   
 def stop():
-    print("Detener")
     left_pwm.ChangeDutyCycle(neutro)
     right_pwm.ChangeDutyCycle(neutro)
+
+def connected_led_indicator():
+    GPIO.output(led_indicator_pin, GPIO.HIGH)
 
 # Función de conexión MQTT
 def on_connect(client, userdata, flags, rc):
     print("Conectado al broker MQTT con resultado: " + str(rc))
+    if rc == 0:
+        connected_led_indicator()
     client.subscribe(topic)
 
 # Función para procesar los mensajes MQTT
