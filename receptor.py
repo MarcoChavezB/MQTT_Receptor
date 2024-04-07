@@ -22,7 +22,7 @@ left_pwm.start(0)
 
 # Configuración de los valores de ciclo de trabajo
 adelante = 2.5
-neutro = 7.5
+neutro = 0
 atras = 12
 
 # Funciones para controlar los motores
