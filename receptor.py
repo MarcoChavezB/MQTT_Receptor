@@ -9,7 +9,7 @@ topic="motors/control"
 
 left_motor_pin = 7
 right_motor_pin = 8
-led_indicator_pin = 3
+led_indicator_pin = 37
  
 
 GPIO.setmode(GPIO.BOARD)
