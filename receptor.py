@@ -20,22 +20,22 @@ right_pwm = GPIO.PWM(right_motor_pin, 50)
 right_pwm.start(0)
 left_pwm.start(0)
 
-# Configuración de los valores de ciclo de trabajo %
+# Configuración de los valores de ciclo de trabajo
 adelante = 2.5
+neutro = 7.5
 atras = 12
-neutro = 0
-
 
 # Funciones para controlar los motores
 def go():
     print("Adelante")
-    right_pwm.ChangeDutyCycle(adelante)
     left_pwm.ChangeDutyCycle(adelante)
+    right_pwm.ChangeDutyCycle(atras)
 
 def back():
     print("Atrás")
     left_pwm.ChangeDutyCycle(atras)
-    right_pwm.ChangeDutyCycle(atras)
+    right_pwm.ChangeDutyCycle(adelante)
+    
 
 def stop():
     print("Detener")
@@ -57,7 +57,7 @@ def on_message(client, userdata, message):
         go()
     elif payload == 's':
         back()
-    elif payload == ' ':
+    elif payload == 'd':
         stop()
 
 # Configuración del cliente MQTT
