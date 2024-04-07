@@ -1,36 +1,26 @@
-import RPi.GPIO as GPIO
-from time import sleep
+from signal import signal, SIGTERM, SIGHUP, pause
+from gpiozero import MCP3002, Motor
 
-## agregar el número de pin BOARD del servo ##
-servo_pin = 11
+adc = (MCP3002(0), MCP3002(1))
+fan = Motor(16, 20)
 
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(servo_pin, GPIO.OUT)
+def safe_exit(signum, frame):
+    exit(1)
 
-pwm=GPIO.PWM(servo_pin, 50)
-pwm.start(0)
+def run_fan():
+    while True:
+        yield adc[0].value*2-1
 
-## editar estos valores de ciclo de trabajo % ##
-adelante = 2.5
-neutro = 7.5
-atras = 12
-#### Fin de la edición ####
+try:
+    signal(SIGTERM, safe_exit)
+    signal(SIGHUP, safe_exit)
+    fan.source = run_fan()
+    pause()
+except KeyboardInterrupt:
+    pass
 
-print("Comenzando la prueba")
-
-print("Ciclo de trabajo", adelante,"% en la izquierda -90 grados")
-pwm.ChangeDutyCycle(adelante)
-sleep(1)
-
-print("Ciclo de trabajo", neutro,"% en 0 grados")
-pwm.ChangeDutyCycle(neutro)
-sleep(1)
-
-print("Ciclo de trabajo", atras, "% a la derecha +90 grados")
-pwm.ChangeDutyCycle(atras)
-sleep(1)
-
-print("Fin de la prueba")
-
-pwm.stop()
-GPIO.cleanup()
+finally:
+    fan.source = None
+    fan.close()
+    adc[0].close()
+    adc[1].close()
