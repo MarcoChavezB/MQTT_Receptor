@@ -21,9 +21,9 @@ right_pwm.start(0)
 left_pwm.start(0)
 
 # Configuración de los valores de ciclo de trabajo %
-adelante = 2.5
-neutro = 7.5
-atras = 5
+adelante = 12
+neutro = 0
+atras = 12
 
 # Funciones para controlar los motores
 def go():
