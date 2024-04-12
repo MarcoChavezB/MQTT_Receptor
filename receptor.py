@@ -94,7 +94,7 @@ def on_connect(client, userdata, flags, rc):
 w -> para ir palante
 a -> Para ir a la izquierda
 s -> Para ir patra
-d -> Para ir a la derecha
+d -> Para ir a la derechaj
 e -> Para el Buzzer
 i -> subir elevador
 k -> bajar elevador
@@ -117,8 +117,8 @@ def on_message(client, userdata, message):
         elevator_up()
     elif payload == 'k':
         elevator_down()
-    
-        
+    elif payload == 'x':
+        stop()
         
 
 def cleanup_gpio(signal, frame):
@@ -145,3 +145,10 @@ client.connect("a169mg5ru5h2z1-ats.iot.us-east-2.amazonaws.com", 8883, 60)
 signal.signal(signal.SIGINT, cleanup_gpio)
 
 client.loop_forever()
+
+
+"""
+lunes y martes prerevicon saber que es lo que va a faltas 22 y 23 revicion 
+final pero si no se entrega el lunes y martes no se va a hacer la revicion 
+se va directo a extra, tener lo mas listo posible este lunes y martes 
+"""
