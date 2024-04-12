@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 from time import sleep
 
-servo_pin = 18
+servo_pin = 35
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(servo_pin, GPIO.OUT)
 servo_pwm = GPIO.PWM(servo_pin, 50)
