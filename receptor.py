@@ -80,6 +80,7 @@ def stop():
     right_pwm.ChangeDutyCycle(neutro)
 
 def buzzer():
+    GPIO.output(buzzer_pin, GPIO.LOW)
     GPIO.output(buzzer_pin, GPIO.HIGH)
     sleep(1)
     GPIO.output(buzzer_pin, GPIO.LOW)
