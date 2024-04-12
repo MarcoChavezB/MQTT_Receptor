@@ -12,10 +12,11 @@ right_motor_pin = 8
 eje_motor_pin = 15
 elevator_motor_pin = 16
 led_indicator_pin = 37
+camera_pin = 35
 buzzer_pin = 40
 
 GPIO.setmode(GPIO.BOARD)
-
+GPIO.setup(camera_pin, GPIO.OUT)
 GPIO.setup(led_indicator_pin, GPIO.OUT)
 GPIO.setup(buzzer_pin, GPIO.OUT)
 GPIO.setup(left_motor_pin, GPIO.OUT)
@@ -27,15 +28,19 @@ left_pwm = GPIO.PWM(left_motor_pin, 50)
 right_pwm = GPIO.PWM(right_motor_pin, 50)
 eje_pwm = GPIO.PWM(eje_motor_pin, 50)
 elevator_pwm = GPIO.PWM(elevator_motor_pin, 50)
+camera_pwm = GPIO.PWM(camera_pin, 50)
 
 right_pwm.start(0)
 left_pwm.start(0)
 eje_pwm.start(0)
 elevator_pwm.start(0)
+camera_pwm.start(0)
 
 adelante = 2.5
 neutro = 0
 atras = 12
+camera_izquierda = 2.5
+camera_derecha = 12
 
 def elevator_up():
     eje_pwm.ChangeDutyCycle(adelante)
@@ -85,8 +90,17 @@ def buzzer():
     sleep(1)
     GPIO.output(buzzer_pin, GPIO.LOW)
     sleep(1)
-  
     
+
+def camera_left():
+    camera_pwm.ChangeDutyCycle(camera_izquierda)
+    sleep(1)
+    camera_pwm.ChangeDutyCycle(neutro)
+    
+def camera_right():
+    camera_pwm.ChangeDutyCycle(camera_derecha)
+    sleep(1)
+    camera_pwm.ChangeDutyCycle(neutro)
 
 def connected_led_indicator():
     GPIO.output(led_indicator_pin, GPIO.HIGH)
@@ -129,6 +143,10 @@ def on_message(client, userdata, message):
         stop()
     elif payload == 'e':
         buzzer()
+    elif payload == 'o':
+        camera_left()
+    elif payload == 'p':
+        camera_right()
         
 
 def cleanup_gpio(signal, frame):
