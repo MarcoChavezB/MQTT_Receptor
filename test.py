@@ -1,31 +1,23 @@
-from gpiozero import AngularServo
+import RPi.GPIO as GPIO
 from time import sleep
 
-# Crea el servo motor con los pulsos mínimos y máximos ajustados para adaptarse a tu servo
-servo = AngularServo(35, min_angle=-90, max_angle=90, min_pulse_width=0.0006, max_pulse_width=0.0023)
+# Configura el número del pin GPIO que estás utilizando para controlar el motor
+motor_pin = 18
 
-def move_to_90_degrees():
-    servo.angle = 0
-
-def move_to_120_degrees():
-    servo.angle = 30
-
-def move_to_20_degrees():
-    servo.angle = -70
+# Configura el modo de los pines GPIO
+GPIO.setmode(GPIO.BOARD)
+# Configura el pin GPIO como salida
+GPIO.setup(motor_pin, GPIO.OUT)
 
 try:
-    while True:
-        # Espera la entrada del usuario
-        user_input = input("Ingrese 'o' para ir a 120 grados, 'p' para ir a 90 grados, 'q' para ir a 20 grados: ")
-        if user_input == 'o':
-            move_to_120_degrees()
-        elif user_input == 'p':
-            move_to_90_degrees()
-        elif user_input == 'q':
-            move_to_20_degrees()
-        else:
-            print("Entrada no válida.")
-except KeyboardInterrupt:
-    pass
+    # Gira el motor en una dirección
+    print("Girando el motor en una dirección")
+    GPIO.output(motor_pin, GPIO.HIGH)  # Enciende el motor
+    sleep(2)  # Espera 2 segundos
+    # Detiene el motor
+    print("Deteniendo el motor")
+    GPIO.output(motor_pin, GPIO.LOW)  # Apaga el motor
+
 finally:
-    servo.detach()  # Libera los recursos del servo al finalizar
+    # Limpia los pines GPIO y restablece cualquier configuración previa
+    GPIO.cleanup()
