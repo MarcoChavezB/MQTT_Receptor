@@ -12,11 +12,12 @@ right_motor_pin = 8
 eje_motor_pin = 15
 elevator_motor_pin = 16
 led_indicator_pin = 37
+buzzer_pin = 40
 
 GPIO.setmode(GPIO.BOARD)
 
 GPIO.setup(led_indicator_pin, GPIO.OUT)
-
+GPIO.setup(buzzer_pin, GPIO.OUT)
 GPIO.setup(left_motor_pin, GPIO.OUT)
 GPIO.setup(right_motor_pin, GPIO.OUT)
 GPIO.setup(eje_motor_pin, GPIO.OUT)
@@ -77,6 +78,12 @@ def right():
 def stop():
     left_pwm.ChangeDutyCycle(neutro)
     right_pwm.ChangeDutyCycle(neutro)
+
+def buzzer():
+    GPIO.output(buzzer_pin, GPIO.HIGH)
+    sleep(0.5)
+    GPIO.output(buzzer_pin, GPIO.LOW)
+    sleep(0.5)
   
     
 
@@ -119,6 +126,8 @@ def on_message(client, userdata, message):
         elevator_down()
     elif payload == 'x':
         stop()
+    elif payload == 'e':
+        buzzer()
         
 
 def cleanup_gpio(signal, frame):
