@@ -1,34 +1,56 @@
 import RPi.GPIO as GPIO
 from time import sleep
 
-camera_pin = 35
+servo_pin = 18
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(camera_pin, GPIO.OUT)
-camera_pwm = GPIO.PWM(camera_pin, 50)
-camera_pwm.start(0)
+GPIO.setup(servo_pin, GPIO.OUT)
+servo_pwm = GPIO.PWM(servo_pin, 50)
+servo_pwm.start(0)
 
-# Define los valores de ciclo de trabajo para la cámara (más bajos para un movimiento más lento)
-camera_neutral = 7.5
-camera_max_right = 12
-camera_max_left = 2.5
+# Define los valores de ciclo de trabajo para el servo (correspondientes a los ángulos)
+angle_20 = 2.5
+angle_90 = 7.5
+angle_120 = 12.5
 
-def move_camera_smoothly(target_position):
-    current_position = camera_neutral
-    while abs(current_position - target_position) > 0.05:  # Mientras la diferencia sea significativa
-        camera_pwm.ChangeDutyCycle(current_position)
-        sleep(0.05)  # Puedes ajustar el tiempo de espera entre pasos según sea necesario
+def move_servo_smoothly(target_angle):
+    current_angle = angle_90
+    # Determina la dirección del movimiento
+    if target_angle > current_angle:
+        step = 0.1  # Paso más pequeño hacia la derecha
+    else:
+        step = -0.1  # Paso más pequeño hacia la izquierda
 
+    while abs(current_angle - target_angle) > 0.1:  # Mientras la diferencia sea significativa
+        servo_pwm.ChangeDutyCycle(current_angle)
+        sleep(0.1)  # Puedes ajustar el tiempo de espera entre pasos según sea necesario
+        current_angle += step
 
-    camera_pwm.ChangeDutyCycle(target_position)
+    # Ajusta a la posición final
+    servo_pwm.ChangeDutyCycle(target_angle)
 
+# Funciones para mover el servo a las posiciones específicas
+def move_to_20_degrees():
+    move_servo_smoothly(angle_20)
 
+def move_to_90_degrees():
+    move_servo_smoothly(angle_90)
+
+def move_to_120_degrees():
+    move_servo_smoothly(angle_120)
+
+# Ejemplo de uso:
 try:
-    # Mueve la cámara hacia la derecha
-    move_camera_smoothly(camera_max_right)
-    sleep(2)  # Espera 2 segundos
-    # Mueve la cámara hacia la izquierda
-    move_camera_smoothly(camera_max_left)
-    sleep(2)  # Espera 2 segundos
+    while True:
+        # Espera la entrada del usuario
+        user_input = input("Ingrese 'o' para ir a 120 grados, 'p' para ir a 90 grados, 'q' para ir a 20 grados: ")
+        if user_input == 'o':
+            move_to_120_degrees()
+        elif user_input == 'p':
+            move_to_90_degrees()
+        elif user_input == 'q':
+            move_to_20_degrees()
+        else:
+            print("Entrada no válida.")
 except KeyboardInterrupt:
     pass
 finally:
