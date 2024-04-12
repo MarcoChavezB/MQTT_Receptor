@@ -7,6 +7,7 @@ import sys
 
 topic = "motors/control"
 
+last_key_pressed = None
 left_motor_pin = 7
 right_motor_pin = 8
 eje_motor_pin = 15
@@ -122,10 +123,14 @@ e -> Para el Buzzer
 i -> subir elevador
 k -> bajar elevador
 """
-
 def on_message(client, userdata, message):
+    global last_key_pressed
     payload = message.payload.decode("utf-8")
     print(payload)
+  
+    if payload != last_key_pressed:
+        last_key_pressed = None
+    
     if payload == 'w':
         go()
     elif payload == 's':
@@ -147,9 +152,10 @@ def on_message(client, userdata, message):
     elif payload == 'o':
         camera_left()
     elif payload == 'p':
-        camera_right()
-        print("Derecha")
-        
+        if last_key_pressed == 'p':
+            camera_right() 
+        camera_right()  
+    last_key_pressed = payload
 
 def cleanup_gpio(signal, frame):
     print("\nLimpiando pines GPIO...")
