@@ -148,6 +148,7 @@ def on_message(client, userdata, message):
         camera_left()
     elif payload == 'p':
         camera_right()
+        print("Derecha")
         
 
 def cleanup_gpio(signal, frame):
