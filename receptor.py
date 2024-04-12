@@ -39,8 +39,9 @@ camera_pwm.start(0)
 adelante = 2.5
 neutro = 0
 atras = 12
-camera_izquierda = 2.5
-camera_derecha = 12
+
+camera_izquierda = 5
+camera_derecha = 10
 
 def elevator_up():
     eje_pwm.ChangeDutyCycle(adelante)
