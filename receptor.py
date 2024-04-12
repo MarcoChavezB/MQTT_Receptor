@@ -81,7 +81,7 @@ def stop():
 
 def buzzer():
     GPIO.output(buzzer_pin, GPIO.HIGH)
-    sleep(2)
+    sleep(1)
     GPIO.output(buzzer_pin, GPIO.LOW)
     sleep(1)
   
