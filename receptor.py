@@ -1,5 +1,4 @@
-import RPi.GPIO as GPIO
-from time import sleep
+import serial
 import paho.mqtt.client as mqtt
 import ssl
 import signal
@@ -7,155 +6,25 @@ import sys
 
 topic = "motors/control"
 
-left_motor_pin = 7
-right_motor_pin = 8
-eje_motor_pin = 15
-elevator_motor_pin = 16
-led_indicator_pin = 37
-camera_pin = 35
-buzzer_pin = 40
+# Configuración del puerto serial
+ser = serial.Serial('/dev/ttyACM0', 9600)  # Ajusta '/dev/ttyACM0' según el puerto serial que estés utilizando en tu sistema
 
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(camera_pin, GPIO.OUT)
-GPIO.setup(led_indicator_pin, GPIO.OUT)
-GPIO.setup(buzzer_pin, GPIO.OUT)
-GPIO.setup(left_motor_pin, GPIO.OUT)
-GPIO.setup(right_motor_pin, GPIO.OUT)
-GPIO.setup(eje_motor_pin, GPIO.OUT)
-GPIO.setup(elevator_motor_pin, GPIO.OUT)
-
-left_pwm = GPIO.PWM(left_motor_pin, 50)
-right_pwm = GPIO.PWM(right_motor_pin, 50)
-eje_pwm = GPIO.PWM(eje_motor_pin, 50)
-elevator_pwm = GPIO.PWM(elevator_motor_pin, 50)
-camera_pwm = GPIO.PWM(camera_pin, 50)
-
-right_pwm.start(0)
-left_pwm.start(0)
-eje_pwm.start(0)
-elevator_pwm.start(0)
-camera_pwm.start(0)
-
-adelante = 2.5
-neutro = 0
-atras = 12
-
-camera_izquierda = 5
-camera_derecha = 12
-
-def elevator_up():
-    eje_pwm.ChangeDutyCycle(adelante)
-    sleep(1)
-    eje_pwm.ChangeDutyCycle(neutro)
-    sleep(1)
-    elevator_pwm.ChangeDutyCycle(adelante)
-    sleep(2)
-    elevator_pwm.ChangeDutyCycle(neutro)
-    
-def elevator_down():
-    elevator_pwm.ChangeDutyCycle(atras)
-    sleep(2)
-    elevator_pwm.ChangeDutyCycle(neutro)
-    sleep(1)
-    eje_pwm.ChangeDutyCycle(atras)
-    sleep(1)
-    eje_pwm.ChangeDutyCycle(neutro)
-
-def go():
-    stop()
-    right_pwm.ChangeDutyCycle(adelante)
-    left_pwm.ChangeDutyCycle(adelante)
-
-def back():
-    stop()
-    right_pwm.ChangeDutyCycle(atras)
-    left_pwm.ChangeDutyCycle(atras)
-
-def left():
-    stop()
-    right_pwm.ChangeDutyCycle(adelante)
-    left_pwm.ChangeDutyCycle(atras)
-
-def right():
-    stop()
-    right_pwm.ChangeDutyCycle(atras)
-    left_pwm.ChangeDutyCycle(adelante)
-    
-def stop():
-    left_pwm.ChangeDutyCycle(neutro)
-    right_pwm.ChangeDutyCycle(neutro)
-
-def buzzer():
-    GPIO.output(buzzer_pin, GPIO.LOW)
-    GPIO.output(buzzer_pin, GPIO.HIGH)
-    sleep(1)
-    GPIO.output(buzzer_pin, GPIO.LOW)
-    sleep(1)
-    
-
-def camera_left():
-    camera_pwm.ChangeDutyCycle(camera_izquierda)
-    sleep(1)
-    camera_pwm.ChangeDutyCycle(neutro)
-    
-def camera_right():
-    camera_pwm.ChangeDutyCycle(camera_derecha)
-    sleep(1)
-    camera_pwm.ChangeDutyCycle(neutro)
-
-def connected_led_indicator():
-    GPIO.output(led_indicator_pin, GPIO.HIGH)
+def send_command(command):
+    ser.write(command.encode())
 
 def on_connect(client, userdata, flags, rc):
     print("Conectado al broker MQTT con resultado: " + str(rc))
-    if rc == 0:
-        connected_led_indicator()
     client.subscribe(topic)
-
-
-"""
-w -> para ir palante
-a -> Para ir a la izquierda
-s -> Para ir patra
-d -> Para ir a la derechaj
-e -> Para el Buzzer
-i -> subir elevador
-k -> bajar elevador
-"""
 
 def on_message(client, userdata, message):
     payload = message.payload.decode("utf-8")
     print(payload)
-    if payload == 'w':
-        go()
-    elif payload == 's':
-        back()
-    elif payload == 'd':
-        right()
-    elif payload == 'a':
-        left()
-    elif payload == 's':
-        back()
-    elif payload == 'i':
-        elevator_up()
-    elif payload == 'k':
-        elevator_down()
-    elif payload == 'x':
-        stop()
-    elif payload == 'e':
-        buzzer()
-    elif payload == 'o':
-        camera_left()
-    elif payload == 'p':
-        camera_right()
-        
+    send_command(payload)
 
-def cleanup_gpio(signal, frame):
-    print("\nLimpiando pines GPIO...")
-    left_pwm.stop()
-    right_pwm.stop()
-    GPIO.cleanup()
-    print("Pines GPIO limpiados correctamente.")
+def cleanup_serial(signal, frame):
+    print("\nCerrando conexión serial...")
+    ser.close()
+    print("Conexión serial cerrada correctamente.")
     sys.exit(0)
 
 client = mqtt.Client()
@@ -171,13 +40,6 @@ client.tls_insecure_set(True)
 
 client.connect("a169mg5ru5h2z1-ats.iot.us-east-2.amazonaws.com", 8883, 60)
 
-signal.signal(signal.SIGINT, cleanup_gpio)
+signal.signal(signal.SIGINT, cleanup_serial)
 
 client.loop_forever()
-
-
-"""
-lunes y martes prerevicon saber que es lo que va a faltas 22 y 23 revicion 
-final pero si no se entrega el lunes y martes no se va a hacer la revicion 
-se va directo a extra, tener lo mas listo posible este lunes y martes 
-"""
