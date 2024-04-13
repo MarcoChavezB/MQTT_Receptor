@@ -6,8 +6,8 @@ import sys
 
 topic = "motors/control"
 
-# Configuración del puerto serial
-ser = serial.Serial('/dev/ttyACM0', 9600)  # Ajusta '/dev/ttyACM0' según el puerto serial que estés utilizando en tu sistema
+
+ser = serial.Serial('/dev/ttyUSB0', 9600) 
 
 def send_command(command):
     ser.write(command.encode())
