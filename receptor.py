@@ -11,9 +11,10 @@ left_motor_pin = 7
 right_motor_pin = 8
 led_right = 37
 led_left = 33
-camera_pin = 35
+camera_pin = 22
 buzzer_pin = 40
 connected_indicator_led = 32
+
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(camera_pin, GPIO.OUT)
@@ -42,6 +43,16 @@ atras = 12
 
 camera_izquierda = 5
 camera_derecha = 12
+
+def move_left_camera():
+    camera_pwm.ChangeDutyCycle(camera_izquierda)
+    sleep(0.5)
+    camera_pwm.ChangeDutyCycle(neutro)
+    
+def move_right_camera():
+    camera_pwm.ChangeDutyCycle(camera_derecha)
+    sleep(0.5)
+    camera_pwm.ChangeDutyCycle(neutro)
 
 def go():
     stop()
@@ -74,17 +85,6 @@ def buzzer():
     GPIO.output(buzzer_pin, GPIO.LOW)
     sleep(1)
     
-
-def camera_left():
-    camera_pwm.ChangeDutyCycle(camera_izquierda)
-    sleep(1)
-    camera_pwm.ChangeDutyCycle(neutro)
-    
-def camera_right():
-    camera_pwm.ChangeDutyCycle(camera_derecha)
-    sleep(1)
-    camera_pwm.ChangeDutyCycle(neutro)
-
 def turn_on_leds():
     GPIO.output(led_left, GPIO.HIGH)
     GPIO.output(led_right, GPIO.HIGH)
@@ -139,9 +139,9 @@ def on_message(client, userdata, message):
     elif payload == 'e':
         buzzer()
     elif payload == 'o':
-        camera_left()
+        move_left_camera()
     elif payload == 'p':
-        camera_right()
+        move_right_camera()
     elif payload == '1':
         turn_on_leds()
     elif payload == '2':
