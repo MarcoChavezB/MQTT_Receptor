@@ -12,7 +12,7 @@ right_motor_pin = 8
 eje_motor_pin = 15
 elevator_motor_pin = 16
 led_right = 37
-led_left = 35
+led_left = 33
 camera_pin = 35
 buzzer_pin = 40
 
