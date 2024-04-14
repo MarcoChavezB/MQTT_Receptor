@@ -115,8 +115,18 @@ def turn_off_leds():
     GPIO.output(led_left, GPIO.LOW)
     GPIO.output(led_right, GPIO.LOW)
     
+    
 def on_connect(client, userdata, flags, rc):
     print("Conectado al broker MQTT con resultado: " + str(rc))
+    if rc == 0:
+        GPIO.output(led_left, GPIO.HIGH)
+        GPIO.output(led_right, GPIO.HIGH)
+        sleep(1)
+        GPIO.output(led_left, GPIO.LOW)
+        GPIO.output(led_right, GPIO.LOW)
+        sleep(1)
+        GPIO.output(led_left, GPIO.HIGH)
+        GPIO.output(led_right, GPIO.HIGH)
     client.subscribe(topic)
 
 
