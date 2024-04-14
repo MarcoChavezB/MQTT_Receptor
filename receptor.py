@@ -9,35 +9,31 @@ topic = "motors/control"
 
 left_motor_pin = 7
 right_motor_pin = 8
-eje_motor_pin = 15
-elevator_motor_pin = 16
 led_right = 37
 led_left = 33
 camera_pin = 35
 buzzer_pin = 40
+connected_indicator_led = 32
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(camera_pin, GPIO.OUT)
 
 GPIO.setup(led_left, GPIO.OUT)
 GPIO.setup(led_right, GPIO.OUT)
+GPIO.setup(connected_indicator_led, GPIO.OUT)
 
 GPIO.setup(buzzer_pin, GPIO.OUT)
 GPIO.setup(left_motor_pin, GPIO.OUT)
 GPIO.setup(right_motor_pin, GPIO.OUT)
-GPIO.setup(eje_motor_pin, GPIO.OUT)
-GPIO.setup(elevator_motor_pin, GPIO.OUT)
+
+
 
 left_pwm = GPIO.PWM(left_motor_pin, 50)
 right_pwm = GPIO.PWM(right_motor_pin, 50)
-eje_pwm = GPIO.PWM(eje_motor_pin, 50)
-elevator_pwm = GPIO.PWM(elevator_motor_pin, 50)
 camera_pwm = GPIO.PWM(camera_pin, 50)
 
 right_pwm.start(0)
 left_pwm.start(0)
-eje_pwm.start(0)
-elevator_pwm.start(0)
 camera_pwm.start(0)
 
 adelante = 2.5
@@ -46,24 +42,6 @@ atras = 12
 
 camera_izquierda = 5
 camera_derecha = 12
-
-def elevator_up():
-    eje_pwm.ChangeDutyCycle(adelante)
-    sleep(1)
-    eje_pwm.ChangeDutyCycle(neutro)
-    sleep(1)
-    elevator_pwm.ChangeDutyCycle(adelante)
-    sleep(2)
-    elevator_pwm.ChangeDutyCycle(neutro)
-    
-def elevator_down():
-    elevator_pwm.ChangeDutyCycle(atras)
-    sleep(2)
-    elevator_pwm.ChangeDutyCycle(neutro)
-    sleep(1)
-    eje_pwm.ChangeDutyCycle(atras)
-    sleep(1)
-    eje_pwm.ChangeDutyCycle(neutro)
 
 def go():
     stop()
@@ -116,6 +94,7 @@ def turn_off_leds():
     GPIO.output(led_right, GPIO.LOW)
     
 def connected():
+    GPIO.output(connected_indicator_led, GPIO.HIGH)
     for _ in range(3):
         GPIO.output(led_left, GPIO.HIGH)
         GPIO.output(led_right, GPIO.HIGH)
@@ -155,10 +134,6 @@ def on_message(client, userdata, message):
         left()
     elif payload == 's':
         back()
-    elif payload == 'i':
-        elevator_up()
-    elif payload == 'k':
-        elevator_down()
     elif payload == 'x':
         stop()
     elif payload == 'e':
