@@ -171,7 +171,7 @@ def on_message(client, userdata, message):
         camera_left()
     elif payload == 'p':
         camera_right()
-    elif payload == 'l':
+    elif payload == '1':
         turn_on_leds()
     elif payload == '2':
         turn_off_leds()
