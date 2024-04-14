@@ -52,6 +52,11 @@ def move_right_camera():
     sleep(0.5)
     camera_pwm.ChangeDutyCycle(0)
     
+def center_camera():
+    camera_pwm.ChangeDutyCycle(7.5)
+    sleep(0.5)
+    camera_pwm.ChangeDutyCycle(0)
+    
 
 def go():
     stop()
@@ -137,10 +142,12 @@ def on_message(client, userdata, message):
         stop()
     elif payload == 'e':
         buzzer()
-    elif payload == 'o':
+    elif payload == 'i':
         move_left_camera()
     elif payload == 'p':
         move_right_camera()
+    elif payload == 'o':
+        center_camera()
     elif payload == '1':
         turn_on_leds()
     elif payload == '2':
