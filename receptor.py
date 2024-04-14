@@ -53,7 +53,7 @@ def move_right_camera():
     camera_pwm.ChangeDutyCycle(0)
     
 def center_camera():
-    camera_pwm.ChangeDutyCycle(6)
+    camera_pwm.ChangeDutyCycle(5.9)
     sleep(0.5)
     camera_pwm.ChangeDutyCycle(0)
     
