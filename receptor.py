@@ -41,26 +41,17 @@ adelante = 2.5
 neutro = 0
 atras = 12
 
-camera_izquierda = 7
-camera_derecha = 12
 
-# Definir los ciclos de trabajo para cada posición
-angle_160 = 7
-angle_90 = 9.5
-angle_20 = 12
-
-# Duración del movimiento entre posiciones
-movement_duration = 0.5
-
-def move_camera_to(position):
-    if position == "160":
-        camera_pwm.ChangeDutyCycle(angle_160)
-    elif position == "90":
-        camera_pwm.ChangeDutyCycle(angle_90)
-    elif position == "20":
-        camera_pwm.ChangeDutyCycle(angle_20)
-    sleep(movement_duration)
-    camera_pwm.ChangeDutyCycle(neutro)
+def move_left_camera():
+    camera_pwm.ChangeDutyCycle(2.5)
+    sleep(0.5)
+    camera_pwm.ChangeDutyCycle(0)
+    
+def move_right_camera():
+    camera_pwm.ChangeDutyCycle(12)
+    sleep(0.5)
+    camera_pwm.ChangeDutyCycle(0)
+    
 
 def go():
     stop()
@@ -147,11 +138,9 @@ def on_message(client, userdata, message):
     elif payload == 'e':
         buzzer()
     elif payload == 'o':
-        move_camera_to("20")
+        move_left_camera()
     elif payload == 'p':
-        move_camera_to("90")
-    elif payload == 'i':
-        move_camera_to("160")
+        move_right_camera()
     elif payload == '1':
         turn_on_leds()
     elif payload == '2':
