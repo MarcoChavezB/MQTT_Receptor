@@ -11,13 +11,17 @@ left_motor_pin = 7
 right_motor_pin = 8
 eje_motor_pin = 15
 elevator_motor_pin = 16
-led_indicator_pin = 37
+led_right = 37
+led_left = 35
 camera_pin = 35
 buzzer_pin = 40
 
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(camera_pin, GPIO.OUT)
-GPIO.setup(led_indicator_pin, GPIO.OUT)
+
+GPIO.setup(led_left, GPIO.OUT)
+GPIO.setup(led_right, GPIO.OUT)
+
 GPIO.setup(buzzer_pin, GPIO.OUT)
 GPIO.setup(left_motor_pin, GPIO.OUT)
 GPIO.setup(right_motor_pin, GPIO.OUT)
@@ -103,13 +107,16 @@ def camera_right():
     sleep(1)
     camera_pwm.ChangeDutyCycle(neutro)
 
-def connected_led_indicator():
-    GPIO.output(led_indicator_pin, GPIO.HIGH)
+def turn_on_leds():
+    GPIO.output(led_left, GPIO.HIGH)
+    GPIO.output(led_right, GPIO.HIGH)
 
+def turn_off_leds():
+    GPIO.output(led_left, GPIO.LOW)
+    GPIO.output(led_right, GPIO.LOW)
+    
 def on_connect(client, userdata, flags, rc):
     print("Conectado al broker MQTT con resultado: " + str(rc))
-    if rc == 0:
-        connected_led_indicator()
     client.subscribe(topic)
 
 
@@ -148,6 +155,10 @@ def on_message(client, userdata, message):
         camera_left()
     elif payload == 'p':
         camera_right()
+    elif payload == 'l':
+        turn_on_leds()
+    elif payload == '2':
+        turn_off_leds()
         
 
 def cleanup_gpio(signal, frame):
