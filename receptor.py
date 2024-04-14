@@ -41,7 +41,7 @@ adelante = 2.5
 neutro = 0
 atras = 12
 
-camera_izquierda = 5
+camera_izquierda = 7
 camera_derecha = 12
 
 def move_left_camera():
