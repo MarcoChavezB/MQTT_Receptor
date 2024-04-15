@@ -1,10 +1,10 @@
 import RPi.GPIO as GPIO
 from time import sleep
+import sys
 sys.path.append("/home/server/.local/lib/python3.9/site-packages")
 import paho.mqtt.client as mqtt
 import ssl
 import signal
-import sys
 
 topic = "motors/control"
 
