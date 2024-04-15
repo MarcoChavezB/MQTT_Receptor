@@ -42,7 +42,6 @@ adelante = 2.5
 neutro = 0
 atras = 12
 
-
 def move_left_camera():
     camera_pwm.ChangeDutyCycle(2.5)
     sleep(0.5)
@@ -147,11 +146,11 @@ def on_message(client, userdata, message):
     elif payload == 'e':
         buzzer()
     elif payload == 'i':
-        move_left_camera()
+        center_camera()
     elif payload == 'p':
         move_right_camera()
     elif payload == 'o':
-        center_camera()
+        move_left_camera()
     elif payload == '1':
         turn_on_leds()
     elif payload == '2':
