@@ -100,12 +100,15 @@ def turn_off_leds():
 def connected():
     GPIO.output(connected_indicator_led, GPIO.HIGH)
     for _ in range(3):
+        move_left_camera()
         GPIO.output(led_left, GPIO.HIGH)
         GPIO.output(led_right, GPIO.HIGH)
         sleep(0.5)
+        move_right_camera()
         GPIO.output(led_left, GPIO.LOW)
         GPIO.output(led_right, GPIO.LOW)
         sleep(0.5)
+    center_camera()
 
     
 def on_connect(client, userdata, flags, rc):
