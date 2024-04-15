@@ -146,11 +146,11 @@ def on_message(client, userdata, message):
     elif payload == 'e':
         buzzer()
     elif payload == 'i':
-        center_camera()
+        move_right_camera()        
     elif payload == 'p':
-        move_right_camera()
+        move_left_camera()        
     elif payload == 'o':
-        move_left_camera()
+        center_camera()
     elif payload == '1':
         turn_on_leds()
     elif payload == '2':
