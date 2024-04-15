@@ -99,7 +99,7 @@ def turn_off_leds():
     
 def connected():
     GPIO.output(connected_indicator_led, GPIO.HIGH)
-    for _ in range(3):
+    for _ in range(2):
         move_left_camera()
         GPIO.output(led_left, GPIO.HIGH)
         GPIO.output(led_right, GPIO.HIGH)
