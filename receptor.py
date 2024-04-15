@@ -147,9 +147,9 @@ def on_message(client, userdata, message):
     elif payload == 'e':
         buzzer()
     elif payload == 'i':
-        move_left_camera()
-    elif payload == 'p':
         move_right_camera()
+    elif payload == 'p':
+        move_left_camera()
     elif payload == 'o':
         center_camera()
     elif payload == '1':
