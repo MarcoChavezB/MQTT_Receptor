@@ -8,8 +8,8 @@ import signal
 
 topic = "motors/control"
 
-left_motor_pin = 7
-right_motor_pin = 8
+left_motor_pin = 11
+right_motor_pin = 12
 led_right = 37
 led_left = 33
 camera_pin = 22
