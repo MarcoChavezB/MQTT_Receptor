@@ -61,7 +61,6 @@ def center_camera():
 
 def go():
     print("Go")
-    stop()
     right_pwm.ChangeDutyCycle(adelante)
     left_pwm.ChangeDutyCycle(adelante)
 
