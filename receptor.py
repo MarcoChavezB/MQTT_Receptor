@@ -60,26 +60,31 @@ def center_camera():
     
 
 def go():
+    print("Go")
     stop()
     right_pwm.ChangeDutyCycle(adelante)
     left_pwm.ChangeDutyCycle(adelante)
 
 def back():
+    print("Back")
     stop()
     right_pwm.ChangeDutyCycle(atras)
     left_pwm.ChangeDutyCycle(atras)
 
 def left():
+    print("Left")
     stop()
     right_pwm.ChangeDutyCycle(adelante)
     left_pwm.ChangeDutyCycle(atras)
 
 def right():
+    print("Right")
     stop()
     right_pwm.ChangeDutyCycle(atras)
     left_pwm.ChangeDutyCycle(adelante)
     
 def stop():
+    print("Stop")
     left_pwm.ChangeDutyCycle(neutro)
     right_pwm.ChangeDutyCycle(neutro)
 
