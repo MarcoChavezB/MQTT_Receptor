@@ -10,7 +10,7 @@ topic = "motors/control"
 
 led_right = 37
 led_left = 33
-camera_pin = 38
+camera_pin = 22
 buzzer_pin = 40
 connected_indicator_led = 32
 
@@ -21,11 +21,8 @@ GPIO.setup(camera_pin, GPIO.OUT)
 GPIO.setup(led_left, GPIO.OUT)
 GPIO.setup(led_right, GPIO.OUT)
 GPIO.setup(connected_indicator_led, GPIO.OUT)
-
 GPIO.setup(buzzer_pin, GPIO.OUT)
-
 camera_pwm = GPIO.PWM(camera_pin, 50)
-
 camera_pwm.start(0)
 
 adelante = 2.5
