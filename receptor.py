@@ -41,7 +41,7 @@ def move_right_camera():
     camera_pwm.ChangeDutyCycle(0)
     
 def center_camera():
-    camera_pwm.ChangeDutyCycle(5.9)
+    camera_pwm.ChangeDutyCycle(5.4)
     sleep(0.5)
     camera_pwm.ChangeDutyCycle(0)
     
@@ -127,7 +127,7 @@ client.tls_set(
     tls_version=ssl.PROTOCOL_SSLv23)
 client.tls_insecure_set(True)
 
-sleep(15)
+#sleep(15)
 client.connect("a169mg5ru5h2z1-ats.iot.us-east-2.amazonaws.com", 8883, 60)
 
 signal.signal(signal.SIGINT, cleanup_gpio)
