@@ -10,7 +10,7 @@ topic = "motors/control"
 
 led_right = 37
 led_left = 33
-camera_pin = 35
+camera_pin = 38
 buzzer_pin = 40
 connected_indicator_led = 32
 
