@@ -8,11 +8,9 @@ import signal
 
 topic = "motors/control"
 
-left_motor_pin = 11
-right_motor_pin = 12
 led_right = 37
 led_left = 33
-camera_pin = 22
+camera_pin = 35
 buzzer_pin = 40
 connected_indicator_led = 32
 
@@ -25,17 +23,9 @@ GPIO.setup(led_right, GPIO.OUT)
 GPIO.setup(connected_indicator_led, GPIO.OUT)
 
 GPIO.setup(buzzer_pin, GPIO.OUT)
-GPIO.setup(left_motor_pin, GPIO.OUT)
-GPIO.setup(right_motor_pin, GPIO.OUT)
 
-
-
-left_pwm = GPIO.PWM(left_motor_pin, 50)
-right_pwm = GPIO.PWM(right_motor_pin, 50)
 camera_pwm = GPIO.PWM(camera_pin, 50)
 
-right_pwm.start(0)
-left_pwm.start(0)
 camera_pwm.start(0)
 
 adelante = 2.5
@@ -59,33 +49,6 @@ def center_camera():
     camera_pwm.ChangeDutyCycle(0)
     
 
-def go():
-    print("Go")
-    right_pwm.ChangeDutyCycle(adelante)
-    left_pwm.ChangeDutyCycle(adelante)
-
-def back():
-    print("Back")
-    stop()
-    right_pwm.ChangeDutyCycle(atras)
-    left_pwm.ChangeDutyCycle(atras)
-
-def left():
-    print("Left")
-    stop()
-    right_pwm.ChangeDutyCycle(adelante)
-    left_pwm.ChangeDutyCycle(atras)
-
-def right():
-    print("Right")
-    stop()
-    right_pwm.ChangeDutyCycle(atras)
-    left_pwm.ChangeDutyCycle(adelante)
-    
-def stop():
-    print("Stop")
-    left_pwm.ChangeDutyCycle(neutro)
-    right_pwm.ChangeDutyCycle(neutro)
 
 def buzzer():
     print("Buzzer")
