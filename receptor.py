@@ -99,19 +99,7 @@ k -> bajar elevador
 def on_message(client, userdata, message):
     payload = message.payload.decode("utf-8")
     print(payload)
-    if payload == 'w':
-        go()
-    elif payload == 's':
-        back()
-    elif payload == 'd':
-        right()
-    elif payload == 'a':
-        left()
-    elif payload == 's':
-        back()
-    elif payload == 'x':
-        stop()
-    elif payload == 'e':
+    if payload == 'e':
         buzzer()
     elif payload == 'i':
         move_left_camera()
@@ -127,8 +115,6 @@ def on_message(client, userdata, message):
 
 def cleanup_gpio(signal, frame):
     print("\nLimpiando pines GPIO...")
-    left_pwm.stop()
-    right_pwm.stop()
     GPIO.cleanup()
     print("Pines GPIO limpiados correctamente.")
     sys.exit(0)
