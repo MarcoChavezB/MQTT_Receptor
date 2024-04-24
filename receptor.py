@@ -48,7 +48,6 @@ def center_camera():
 
 
 def buzzer():
-    print("Buzzer")
     GPIO.output(buzzer_pin, GPIO.HIGH)
     sleep(1)
     GPIO.output(buzzer_pin, GPIO.LOW)
@@ -95,7 +94,6 @@ k -> bajar elevador
 
 def on_message(client, userdata, message):
     payload = message.payload.decode("utf-8")
-    print(payload)
     if payload == 'e':
         buzzer()
     elif payload == 'i':
